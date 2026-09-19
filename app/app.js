@@ -39,10 +39,18 @@ let sua = null;   // id khung đang sửa
 const $ = s => document.querySelector(s);
 const esc = s => String(s == null ? '' : s).replace(/[&<>"]/g, c => ({'&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;'}[c]));
 function toast(m) { const t = $('#toast'); t.textContent = m; t.classList.add('on'); setTimeout(() => t.classList.remove('on'), 1800); }
+// Mini App mở từ nút bàn phím KHÔNG có initData (Telegram chỉ cấp cho app mở từ nút inline/menu),
+// nên nhận diện bằng platform. sendData đóng app ngay, bot trả lời trong chat.
+const TRONG_TG = !!(TG && TG.platform && TG.platform !== 'unknown');
 function gui(d) {
   const s = JSON.stringify(d);
-  if (TG && TG.initData) { TG.sendData(s); return; }
-  alert('Ngoài Telegram — dữ liệu sẽ gửi:\n' + s);
+  if (TRONG_TG) {
+    try { TG.HapticFeedback && TG.HapticFeedback.impactOccurred('medium'); } catch (e) {}
+    TG.sendData(s);
+    return;
+  }
+  toast('Mở từ Telegram (nút 🏪) mới gửi được lệnh');
+  console.log('sendData', s);
 }
 function phut(g) { const [h, m] = g.split(':').map(Number); return h * 60 + m; }
 function gio(p) { p = ((p % 1440) + 1440) % 1440; return String(Math.floor(p / 60)).padStart(2, '0') + ':' + String(p % 60).padStart(2, '0'); }
