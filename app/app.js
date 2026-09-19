@@ -37,7 +37,8 @@ let sua = null;   // id khung đang sửa
 
 // ---------- tiện ích ----------
 const $ = s => document.querySelector(s);
-const esc = s => String(s == null ? '' : s).replace(/[&<>"]/g, c => ({'&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;'}[c]));
+const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({'&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'}[c]));
+const attr = o => esc(JSON.stringify(o));   // JSON đặt trong thuộc tính data-gui='…' — tên video có thể chứa ' hay "
 function toast(m) { const t = $('#toast'); t.textContent = m; t.classList.add('on'); setTimeout(() => t.classList.remove('on'), 1800); }
 // Mini App mở từ nút bàn phím KHÔNG có initData (Telegram chỉ cấp cho app mở từ nút inline/menu),
 // nên nhận diện bằng platform. sendData đóng app ngay, bot trả lời trong chat.
@@ -129,8 +130,8 @@ function manKhung() {
 function manVideo() {
   const vs = S.videos || [];
   const rows = vs.length ? vs.map(v => `<div class="vid"><div class="ten">${esc(v.ten)}<small>${esc(v.luc)} · ${v.mb} MB</small></div>
-    <div class="acts"><button title="Gửi lại file" data-gui='${JSON.stringify({a: 'gui_video', f: v.f})}'>📥</button>
-    ${(S.nen_co || []).filter(n => n !== 'youtube').map(n => `<button title="Đăng lên ${TEN_NEN[n]}" data-gui='${JSON.stringify({a: 'dang', f: v.f, nen: n})}'>${ICON[n]}</button>`).join('')}</div></div>`).join('')
+    <div class="acts"><button title="Gửi lại file" data-gui='${attr({a: 'gui_video', f: v.f})}'>📥</button>
+    ${(S.nen_co || []).filter(n => n !== 'youtube').map(n => `<button title="Đăng lên ${TEN_NEN[n]}" data-gui='${attr({a: 'dang', f: v.f, nen: n})}'>${ICON[n]}</button>`).join('')}</div></div>`).join('')
     : '<div class="empty">Chưa có video nào.</div>';
   return `<div class="wrap"><div class="card"><h2>Video gần đây</h2>${rows}</div>
     <div class="empty">📥 gửi lại file vào chat · 📘 🎵 đăng thêm lên nền tảng (caption lấy theo tên video).</div></div>`;
