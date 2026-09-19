@@ -1,0 +1,13 @@
+<!doctype html><html lang="vi"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Đăng nhập TikTok xong</title><style>body{font-family:system-ui,Segoe UI,Arial,sans-serif;max-width:720px;margin:40px auto;padding:0 20px;line-height:1.6;color:#222}h1{font-size:26px}h2{font-size:18px;margin-top:28px}code{background:#f2f2f2;padding:2px 6px;border-radius:4px;word-break:break-all}.box{background:#f6f8fa;border:1px solid #ddd;border-radius:8px;padding:14px 16px;margin:16px 0}button{font-size:15px;padding:8px 16px;border-radius:6px;border:1px solid #888;background:#fff;cursor:pointer}footer{margin-top:40px;color:#777;font-size:13px}</style>
+<h1>Đã đăng nhập TikTok</h1>
+<p id="ok">Bây giờ chép <b>nguyên địa chỉ trang này</b> rồi dán vào ô <b>"URL trả về"</b> trong TaoVideoBot → 🔗 Đăng bài → TikTok → bấm <b>2. Đổi mã</b>.</p>
+<div class="box"><code id="url"></code></div>
+<button onclick="navigator.clipboard.writeText(location.href).then(()=>{this.textContent='Đã chép ✓'})">Chép địa chỉ</button>
+<p id="loi" style="color:#b00020"></p>
+<script>
+document.getElementById('url').textContent = location.href;
+const q = new URLSearchParams(location.search);
+if (q.get('error')) { document.getElementById('ok').textContent = 'TikTok từ chối đăng nhập.'; document.getElementById('loi').textContent = q.get('error') + ': ' + (q.get('error_description') || ''); }
+else if (!q.get('code')) { document.getElementById('ok').textContent = 'Trang này chỉ dùng khi TikTok chuyển hướng về sau khi đăng nhập. Hãy bấm "1. Mở đăng nhập" trong TaoVideoBot.'; }
+</script>
+<footer>Tin Tạp Hoá · liên hệ: nguyentannhan.it@gmail.com</footer></html>
