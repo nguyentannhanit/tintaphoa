@@ -130,11 +130,11 @@ function manKhung() {
 function manVideo() {
   const vs = S.videos || [];
   const rows = vs.length ? vs.map(v => `<div class="vid"><div class="ten">${esc(v.ten)}<small>${esc(v.luc)} · ${v.mb} MB</small></div>
-    <div class="acts"><button title="Gửi lại file" data-gui='${attr({a: 'gui_video', f: v.f})}'>📥</button>
+    <div class="acts"><button title="Gửi caption" data-gui='${attr({a: 'caption', f: v.f})}'>📋</button><button title="Gửi lại file" data-gui='${attr({a: 'gui_video', f: v.f})}'>📥</button>
     ${(S.nen_co || []).filter(n => n !== 'youtube').map(n => `<button title="Đăng lên ${TEN_NEN[n]}" data-gui='${attr({a: 'dang', f: v.f, nen: n})}'>${ICON[n]}</button>`).join('')}</div></div>`).join('')
     : '<div class="empty">Chưa có video nào.</div>';
   return `<div class="wrap"><div class="card"><h2>Video gần đây</h2>${rows}</div>
-    <div class="empty">📥 gửi lại file vào chat · 📘 🎵 đăng thêm lên nền tảng (caption lấy theo tên video).</div></div>`;
+    <div class="empty">📋 gửi caption để dán · 📥 gửi lại file · 📘 🎵 đăng thêm lên nền tảng. TikTok chỉ nhận vào hộp thư nên caption gửi kèm trong chat, giữ tin → Sao chép → dán.</div></div>`;
 }
 
 // ---------- màn: báo cáo ----------
