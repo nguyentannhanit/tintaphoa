@@ -1,4 +1,4 @@
-/* Mini App "Tin Tạp Hoá — Điều hành".
+/* Mini App điều hành TaoVideoBot (tên kênh, logo, TikTok lấy từ trạng thái bot gửi vào).
    Dữ liệu vào: tham số ?s= (JSON nén zlib + base64url) do bot gắn vào nút 🏪 mỗi lần gửi bàn phím.
    Dữ liệu ra: Telegram.WebApp.sendData(JSON) → bot nhận ở on_web_app. sendData đóng app,
    nên mỗi nút Lưu/Chạy/Gửi là một lần đóng — bot trả lời trong chat và làm mới nút 🏪. */
@@ -113,7 +113,7 @@ function manKhung() {
       <div class="empty" style="text-align:center">bước 15 phút · <input type="time" id="gioGo" value="${k.gio}"></div></div>
     <div class="card"><h2>Đăng lên</h2>
       ${nenCo.map(n => `<div class="field"><label>${ICON[n]} ${TEN_NEN[n]}${n === 'facebook' ? ' Reels' : ''}<small>${
-        n === 'tiktok' ? '@tintaphoa_official' + (S.tt_direct ? ' · đăng thẳng' : ' · sandbox: vào hộp thư') : 'Fanpage Tin Tạp Hoá'}${
+        n === 'tiktok' ? esc((S.kenh || {}).tiktok || 'TikTok') + (S.tt_direct ? ' · đăng thẳng' : ' · sandbox: vào hộp thư') : 'Fanpage ' + esc((S.kenh || {}).ten || '')}${
         (S.nen_co || []).includes(n) ? '' : ' · <span style="color:#FF8A75">chưa cấu hình trong phần mềm</span>'}</small></label>
         <div class="sw ${k.nen.includes(n) ? 'on' : ''}" data-nen="${n}"></div></div>`).join('')}</div>
     <div class="card"><h2>Nội dung</h2>
@@ -229,4 +229,11 @@ document.addEventListener('click', ev => {
   }
 });
 if ((S.bot || {}).dang_lam) { $('#pill').textContent = 'Đang dựng'; $('#pill').classList.add('ban'); }
+// hồ sơ kênh: tên + chữ tắt làm logo, tiêu đề tab
+(() => {
+  const k = S.kenh || {}; const ten = k.ten || 'TaoVideoBot';
+  const tat = ten.split(/\s+/).map(w => w[0] || '').join('').toUpperCase().slice(0, 3) || 'TVB';
+  document.querySelector('.top h1').textContent = ten; document.querySelector('.top .logo').textContent = tat;
+  document.title = ten + ' — Điều hành';
+})();
 ve();
